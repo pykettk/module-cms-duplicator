@@ -1,0 +1,23 @@
+{
+    "name": "element119/module-cms-duplicator",
+    "type": "magento2-module",
+    "description": "A Magento 2 module that allows admins to duplicate CMS blocks and pages.",
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "Kiel Pykett",
+            "email": "pykettk@gmail.com"
+        }
+    ],
+    "require": {
+        "magento/module-cms": "^104.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Element119\\CmsDuplicator\\": ""
+        },
+        "files": [
+            "registration.php"
+        ]
+    }
+}
