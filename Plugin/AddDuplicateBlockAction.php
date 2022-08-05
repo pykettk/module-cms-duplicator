@@ -37,7 +37,7 @@ class AddDuplicateBlockAction
         array $result
     ): array {
         try {
-            return $this->cmsDuplicator->addDuplicateAction($result, 'block');
+            return $this->cmsDuplicator->addDuplicateActions($result, 'block');
         } catch (InputException $e) {
             return $result;
         }

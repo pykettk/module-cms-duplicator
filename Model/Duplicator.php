@@ -60,14 +60,14 @@ class Duplicator
      *
      * @param string $entityId
      * @param string $entityType
-     * @return void
+     * @return BlockInterface|PageInterface
      * @throws InputException
      * @throws LocalizedException
      */
     public function duplicateCmsEntity(
         string $entityId,
         string $entityType
-    ): void {
+    ) {
         if (!in_array($entityType, self::CMS_ENTITY_TYPES)) {
             throw new InputException(__('Invalid CMS type specified'));
         }
@@ -82,18 +82,18 @@ class Duplicator
         $entityModel->setIdentifier($entityModel->getIdentifier() . '_' . uniqid());
         $entityModel->setIsActive(false);
 
-        $entityRepository->save($entityModel);
+        return $entityRepository->save($entityModel);
     }
 
     /**
-     * Add the duplicate action to the given set of actions for a given CMS entity type.
+     * Add the duplicate actions to the given set of actions for a given CMS entity type.
      *
      * @param array $actions
      * @param string $entityType
      * @return array
      * @throws InputException
      */
-    public function addDuplicateAction(
+    public function addDuplicateActions(
         array $actions,
         string $entityType
     ): array {
@@ -106,6 +106,7 @@ class Duplicator
                 if (isset($item['identifier'])) {
                     $title = $this->escaper->escapeHtml($item['title']);
 
+                    // duplicate
                     $item['actions']['duplicate'] = [
                         'href' => $this->urlBuilder->getUrl(
                             self::CMS_DUPLICATE_URL,
@@ -118,6 +119,24 @@ class Duplicator
                         'confirm' => [
                             'title' => __('Duplicate %1', $title),
                             'message' => __('Are you sure you want to duplicate a %1 record?', $title),
+                        ],
+                        'post' => true,
+                    ];
+
+                    // duplicate and edit
+                    $item['actions']['duplicate_edit'] = [
+                        'href' => $this->urlBuilder->getUrl(
+                            self::CMS_DUPLICATE_URL,
+                            [
+                                'type' => $entityType,
+                                'id' => $item["{$entityType}_id"],
+                                'edit' => true,
+                            ]
+                        ),
+                        'label' => __('Duplicate and Edit'),
+                        'confirm' => [
+                            'title' => __('Duplicate and Edit %1', $title),
+                            'message' => __('Are you sure you want to duplicate and edit a %1 record?', $title),
                         ],
                         'post' => true,
                     ];

@@ -42,23 +42,27 @@ class Duplicate extends Action implements ActionInterface
     {
         $cmsEntityId = $this->getRequest()->getParam('id');
         $cmsEntityType = $this->getRequest()->getParam('type');
+        $editEntity = $this->getRequest()->getParam('edit');
 
         /** @var Redirect $resultRedirect */
         $resultRedirect = $this->resultRedirectFactory->create();
-        $resultRedirect->setPath("cms/{$cmsEntityType}/index");
 
         if ($cmsEntityId && $cmsEntityType) {
             try {
-                $this->cmsDuplicator->duplicateCmsEntity($cmsEntityId, $cmsEntityType);
+                $newCmsEntity = $this->cmsDuplicator->duplicateCmsEntity($cmsEntityId, $cmsEntityType);
+                $this->messageManager->addSuccessMessage(__('You duplicated the %1.', $cmsEntityType));
+
+                return $resultRedirect->setPath(
+                    "cms/{$cmsEntityType}/edit",
+                    $editEntity ? ["{$cmsEntityType}_id" => $newCmsEntity->getId()] : []
+                );
             } catch (InputException | LocalizedException $e) {
                 $this->messageManager->addErrorMessage($e->getMessage());
 
-                return $resultRedirect;
+                return $resultRedirect->setPath("cms/{$cmsEntityType}/");;
             }
-
-            $this->messageManager->addSuccessMessage(__('You duplicated the %1.', $cmsEntityType));
         }
 
-        return $resultRedirect;
+        return $resultRedirect->setPath("cms/{$cmsEntityType}/");
     }
 }

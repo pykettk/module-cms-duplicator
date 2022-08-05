@@ -37,7 +37,7 @@ class AddDuplicatePageAction
         array $result
     ): array {
         try {
-            return $this->cmsDuplicator->addDuplicateAction($result, 'page');
+            return $this->cmsDuplicator->addDuplicateActions($result, 'page');
         } catch (InputException $e) {
             return $result;
         }
