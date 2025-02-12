@@ -81,15 +81,3 @@ php bin/magento setup:upgrade
 4. Click `Duplicate`
 
 ![](https://user-images.githubusercontent.com/40261741/183159733-7c4ad7a2-3ed3-41c0-a275-d178006b5d52.png)
-
-<br>
-
----
-
-<div align="center">
-
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/pykettk)
-
-For those that want to support this project.
-
-</div>
